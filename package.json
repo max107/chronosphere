@@ -1,12 +1,7 @@
 {
-  "name": "es6-karma-jasmine-webpack-boilerplate",
-  "version": "0.2.0",
-  "description": "Boilerplate for ES6 client-based library. Uses Babel and webpack for transpiling and building, Karma and Jasmine for unit testing, and Istanbul/Isparta for code coverage.",
+  "name": "chronosphere",
+  "version": "1.0.0",
   "main": "dist/calculator.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zyml/es6-karma-jasmine-webpack-boilerplate"
-  },
   "scripts": {
     "build": "npm run clean && npm run build:dev && npm run build:prd",
     "build:dev": "webpack src/Calculator.js dist/calculator.js --config tools/webpack.config.dev.js",
@@ -14,18 +9,9 @@
     "prepublish": "npm run build",
     "clean": "rimraf dist build",
     "lint": "eslint src",
-    "test": "karma start --single-run --no-auto-watch karma.config.js"
+    "test_single": "karma start --single-run --no-auto-watch karma.config.js",
+    "test": "karma start karma.config.js"
   },
-  "keywords": [
-    "es6",
-    "babel",
-    "webpack",
-    "jasmine",
-    "karma",
-    "istanbul",
-    "boilerplate"
-  ],
-  "author": "Melvin Lee (http://www.zy.sg/)",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.4.0",
@@ -35,6 +21,7 @@
     "babel-loader": "^6.2.1",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.22.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^3.1.0",
     "jasmine-core": "^2.4.1",
