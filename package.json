@@ -1,6 +1,6 @@
 {
   "name": "chronosphere",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/chronosphere.js",
   "scripts": {
     "build": "npm run clean && npm run build:dev && npm run build:prd",
