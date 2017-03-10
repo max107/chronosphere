@@ -1,11 +1,79 @@
+function strToDigit(str) {
+    const exclude = [
+        {regex: /восемнадцать/g, value: 18},
+        {regex: /семнадцать/g, value: 17},
+
+        {regex: /десять/g, value: 10},
+        {regex: /одиннадцать/g, value: 11},
+        {regex: /двенадцать/g, value: 12},
+        {regex: /тринадцать/g, value: 13},
+        {regex: /четырнадцать/g, value: 14},
+        {regex: /пятнадцать/g, value: 15},
+        {regex: /шестнадцать/g, value: 16},
+        {regex: /девятнадцать/g, value: 19},
+    ];
+    const pairs = [
+        {regex: /двадцать/g, value: 2},
+        {regex: /тридцать/g, value: 3},
+        {regex: /сорок/g, value: 4},
+        {regex: /пятьдесят/g, value: 5}
+    ];
+    const digits = [
+        {regex: / одну/g, value: 1},
+        {regex: / две/g, value: 2},
+        {regex: / три/g, value: 3},
+        {regex: / четыре/g, value: 4},
+        {regex: / пять/g, value: 5},
+        {regex: / шесть/g, value: 6},
+        {regex: / семь/g, value: 7},
+        {regex: / восемь/g, value: 8},
+        {regex: / девять/g, value: 9},
+    ];
+
+    for (let r in exclude) {
+        if (str.match(exclude[r].regex)) {
+            return exclude[r].value.toString();
+        }
+    }
+
+    for (let i in pairs) {
+        let matches = str.match(pairs[i].regex);
+        if (matches) {
+            for (let t in digits) {
+                if (str.replace(matches[0], '').match(digits[t].regex)) {
+                    return [
+                        pairs[i].value,
+                        digits[t].value
+                    ].join('');
+                }
+            }
+
+            return [pairs[i].value, 0].join('');
+        }
+    }
+
+    for (let t in digits) {
+        if (str.match(digits[t].regex)) {
+            return digits[t].value.toString();
+        }
+    }
+
+    return false;
+}
+
+export {
+    strToDigit
+}
+
 export default class Chronosphere {
     options = {
-        date: new Date()
+        mydate: new Date(),
+        newdate: new Date()
     };
 
     constructor(options = {}) {
         const defaultOptions = {};
-        this.options = { ...options, ...defaultOptions };
+        this.options = {...options, ...defaultOptions};
     }
 
     replaceDigits(str) {
@@ -15,11 +83,16 @@ export default class Chronosphere {
             "тринадцать": "13",
             "четырнадцать": "14",
             "пятнадцать": "15",
+            "пятьдесят": "50",
+            "сорок": "40",
             " шестнадцать": " 16",
             " семнадцать": " 17",
             " двадцать": " 20",
             " один": " 1",
+            " одну": " 1",
             " два": " 2",
+            " две": " 2",
+            " тридцать": " 30",
             " три": " 3",
             " четыре": " 4",
             " пять": " 5",
@@ -36,10 +109,6 @@ export default class Chronosphere {
         return str;
     }
 
-    parsePatterns() {
-
-    }
-
     /**
      * Парсер даты (позвонить послезавтра, напомнить в 18, в субботу встреча)
      * @param title
@@ -50,8 +119,8 @@ export default class Chronosphere {
         var answer = "";
         var did = false;
         var mytime = "";
-        var mydate = this.options.date;
-        var newdate = new Date();
+        var mydate = this.options.mydate;
+        var newdate = this.options.newdate;
         var d = {};
         d.myhours = 0;
         d.myminutes = 0;
@@ -120,6 +189,7 @@ export default class Chronosphere {
             if (matches3[0] == "дек") {
                 mymonth = 12;
             }
+
             newdate.setDate(matches4[0]);
             newdate.setMonth(mymonth - 1);
             if (matches2) {
@@ -138,7 +208,7 @@ export default class Chronosphere {
         matches = title.match(shablon);
 
         if (matches) {
-            var add_days;
+            let add_days;
             if (matches[0] == "позавчера") {
                 add_days = -2;
             }
@@ -160,7 +230,7 @@ export default class Chronosphere {
         }
 
         matches = title
-            .match(/(\d{1,2}ч|\d{1,2} ч)|(в \d{1,2}:\d{1,2})|(в\d{1,2}:\d{1,2})|(\d{2} ми)|(\d{2}ми)|(\d{1,2} \d{2}м)|(днем в \d{1,2}:\d{1,2})|(днем в \d{1,2})|(в \d{1,2} дня)|(в \d{1,2} ночи)|(в \d{1,2})|(в\d{1,2})|(\d{1,2}:\d{1,2})/g);
+            .match(/(\d{1,2}ч|\d{1,2} ч)|(в \d{1,2}:\d{1,2})|(в\d{1,2}:\d{1,2})|(\d{2} ми)|(\d{2}ми)|(\d{1,2} \d{2}м)|(в \d{1,2} вечера)|(днем в \d{1,2}:\d{1,2})|(днем в \d{1,2})|(в \d{1,2} дня)|(в \d{1,2} ночи)|(в \d{1,2})|(в\d{1,2})|(\d{1,2}:\d{1,2})/g);
         if (matches) {
             if (matches.length == 1) {
                 mytime = matches;
@@ -297,15 +367,20 @@ export default class Chronosphere {
                 }
 
                 if (!need_analyse) {
-                    mytime = mytime.toString().replace("в ", "").replace("в", "");
-
-                    if (mytime.toString().match(/дня|днем/g)) {
+                    if (mytime.toString().match(/вечера/g)) {
                         let matches3 = mytime.toString().match(/\d{1,2}/g);
-                        if (matches3.length > 1) {
-                            matches3[0] = parseInt(matches3[0]) + 12;
-                            mytime = matches3.join(":");
-                        } else {
-                            mytime = (parseInt(matches3[0]) + 12).toString();
+                        mytime = (parseInt(matches3[0]) + 12).toString();
+                    } else {
+                        mytime = mytime.toString().replace("в ", "").replace("в", "");
+
+                        if (mytime.toString().match(/дня|днем/g)) {
+                            let matches3 = mytime.toString().match(/\d{1,2}/g);
+                            if (matches3.length > 1) {
+                                matches3[0] = parseInt(matches3[0]) + 12;
+                                mytime = matches3.join(":");
+                            } else {
+                                mytime = (parseInt(matches3[0]) + 12).toString();
+                            }
                         }
                     }
 
@@ -329,7 +404,6 @@ export default class Chronosphere {
         }
 
         if (mytime != "") {
-            console.log('@@@@', {[title]: mytime});
             if (mytime.toString().match(/\d{1,2}:\d{1,2}/g)) {
                 let newtime = mytime.toString().split(":");
                 mydate.setHours(parseInt(newtime[0]), 10);
