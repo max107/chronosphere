@@ -71,11 +71,19 @@ export default class Chronosphere {
         newdate: new Date()
     };
 
+    /**
+     * @param options
+     */
     constructor(options = {}) {
         const defaultOptions = {};
         this.options = {...options, ...defaultOptions};
     }
 
+    /**
+     * Replace str to digit
+     * @param str
+     * @returns {*}
+     */
     replaceDigits(str) {
         const pairs = {
             "одинадцать": "11",
@@ -107,6 +115,42 @@ export default class Chronosphere {
             str = str.replace(find, pairs[find]);
         }
         return str;
+    }
+
+    /**
+     * Month str to digit
+     * @param str
+     * @returns {*}
+     */
+    monthToDigit(str) {
+        switch (str) {
+            case "янв":
+                return 1;
+            case "фев":
+                return 2;
+            case "мар":
+                return 3;
+            case "апр":
+                return 4;
+            case "мая":
+                return 5;
+            case "июн":
+                return 6;
+            case "июл":
+                return 7;
+            case "авг":
+                return 8;
+            case "сен":
+                return 9;
+            case "окт":
+                return 10;
+            case "ноя":
+                return 11;
+            case "дек":
+                return 12;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -149,46 +193,7 @@ export default class Chronosphere {
             shablon = /(\d{1,2})/g;
             var matches4 = matches[0].match(shablon); //найти дату
 
-            var mymonth;
-            if (matches3[0] == "янв") {
-                mymonth = 1;
-            }
-            if (matches3[0] == "фев") {
-                mymonth = 2;
-            }
-            if (matches3[0] == "мар") {
-                mymonth = 3;
-            }
-            if (matches3[0] == "апр") {
-                mymonth = 4;
-            }
-            if (matches3[0] == "мая") {
-                mymonth = 5;
-            }
-            if (matches3[0] == "май") {
-                mymonth = 5;
-            }
-            if (matches3[0] == "июн") {
-                mymonth = 6;
-            }
-            if (matches3[0] == "июл") {
-                mymonth = 7;
-            }
-            if (matches3[0] == "авг") {
-                mymonth = 8;
-            }
-            if (matches3[0] == "сен") {
-                mymonth = 9;
-            }
-            if (matches3[0] == "окт") {
-                mymonth = 10;
-            }
-            if (matches3[0] == "ноя") {
-                mymonth = 11;
-            }
-            if (matches3[0] == "дек") {
-                mymonth = 12;
-            }
+            let mymonth = this.monthToDigit(matches3[0]);
 
             newdate.setDate(matches4[0]);
             newdate.setMonth(mymonth - 1);
