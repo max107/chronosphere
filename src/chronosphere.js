@@ -66,16 +66,24 @@ export {
 }
 
 export default class Chronosphere {
+    date = new Date();
+    copiedDate = new Date();
+
     options = {
-        mydate: new Date(),
-        newdate: new Date()
+
     };
 
     /**
-     * @param options
+     * @param date Date
+     * @param options object
      */
-    constructor(options = {}) {
-        const defaultOptions = {};
+    constructor(date, options = {}) {
+        this.date = date || new Date();
+        this.copiedDate = new Date(this.date.getTime());
+
+        const defaultOptions = {
+
+        };
         this.options = {...options, ...defaultOptions};
     }
 
@@ -189,8 +197,8 @@ export default class Chronosphere {
         var answer = "";
         var did = false;
         var mytime = "";
-        var mydate = this.options.mydate;
-        var newdate = this.options.newdate;
+        var mydate = this.date;
+        var newdate = this.copiedDate;
         var d = {};
         d.myhours = 0;
         d.myminutes = 0;

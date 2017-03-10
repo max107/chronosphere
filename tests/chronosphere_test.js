@@ -177,10 +177,7 @@ describe('Chronosphere parse', () => {
 
     for (let str in provider) {
         it(str, () => {
-            let params = (new Chronosphere({
-                mydate: new Date('2017-03-09 00:00:00'),
-                newdate: new Date('2017-03-09 00:00:00')
-            })).parse(str);
+            let params = (new Chronosphere(new Date('2017-03-09 00:00:00'))).parse(str);
 
             expect(params.date.toString())
                 .toBe((new Date(provider[str].date)).toString());
