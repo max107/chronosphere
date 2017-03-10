@@ -76,6 +76,67 @@ describe('Chronosphere strToDigit', () => {
     }
 });
 
+/*
+todo
+describe('Chronosphere parseRemind', () => {
+    // noinspection JSNonASCIINames
+    const provider = {
+        'напомнить за час': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 11:00:00'
+        },
+        'напомнить утром': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 08:00:00'
+        },
+        'напомнить в два': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 14:00:00'
+        },
+        'напомнить в 12': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 12:00:00'
+        },
+        'напомнить за день': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-12 12:00:00'
+        },
+        'напомнить за два дня': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-11 12:00:00'
+        },
+        'напомнить за 2 недели': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 11:00:00'
+        },
+        'напомнить за 1 неденю': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-13 11:00:00'
+        },
+        'напомнить за 1 день до события в 8ч': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-12 08:00:00'
+        },
+        'напомнить за 1 день до события в 8 ч': {
+            date: '2017-03-13 12:00:00',
+            remind: '2017-03-12 08:00:00'
+        },
+    };
+
+    for (let str in provider) {
+        it(str, () => {
+            let params = (new Chronosphere({
+                mydate: new Date('2017-03-09 00:00:00'),
+                newdate: new Date('2017-03-09 00:00:00')
+            })).parseRemind(new Date(provider[str].date), str);
+
+            expect(params.date.toString())
+                .toBe((new Date(provider[str].remind)).toString());
+        });
+    }
+});
+ */
+
 describe('Chronosphere parse', () => {
     // noinspection JSNonASCIINames
     const provider = {

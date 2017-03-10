@@ -154,6 +154,32 @@ export default class Chronosphere {
     }
 
     /**
+     * Weekday to digit
+     * @param str
+     * @returns {*}
+     */
+    weekdayToDigit(str) {
+        switch (str) {
+            case "понед":
+                return 1;
+            case "вторн":
+                return 2;
+            case "сред":
+                return 3;
+            case "четв":
+                return 4;
+            case "пятн":
+                return 5;
+            case "субб":
+                return 6;
+            case "воскр":
+                return 7;
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Парсер даты (позвонить послезавтра, напомнить в 18, в субботу встреча)
      * @param title
      * @returns {{title: string, date: Date, sms: (string|string)}}
@@ -434,14 +460,7 @@ export default class Chronosphere {
         shablon = /(понед)|(вторн)|(сред)|(четв)|(пятн)|(субб)|(воскр)/g;
         matches = title.match(shablon);
         if (matches) {
-            let week = 0;
-            if (matches[0] == "понед") week = 1;
-            if (matches[0] == "вторн") week = 2;
-            if (matches[0] == "сред") week = 3;
-            if (matches[0] == "четв") week = 4;
-            if (matches[0] == "пятн") week = 5;
-            if (matches[0] == "субб") week = 6;
-            if (matches[0] == "воскр") week = 7;
+            let week = this.weekdayToDigit(matches[0]);
             if (week != 0) {
                 mydate = this.nextWeekDay(mydate, week);
                 answer = matches[0];
@@ -460,11 +479,19 @@ export default class Chronosphere {
             add += " | Напомнить за " + remind_time + " м";
             remind = remind_time + " м";
         }
+
         return {
             // title: answer + " " + add,
             // title: null,
             date: mydate,
             // remind: null
+        };
+    }
+
+    parseRemind(date, str) {
+        // TODO
+        return {
+            date
         };
     }
 
